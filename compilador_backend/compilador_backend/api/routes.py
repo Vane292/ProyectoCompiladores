@@ -1,0 +1,1 @@
+# Definición de endpoints para el frontend

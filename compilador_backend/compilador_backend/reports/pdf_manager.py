@@ -1,0 +1,1 @@
+# Lógica para generación de reporte PDF
