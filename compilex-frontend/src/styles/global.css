@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ─────────────────────────────── */
+:root {
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --bg-base:      #080B0F;
+  --bg-panel:     #0D1117;
+  --bg-elevated:  #161B22;
+  --bg-border:    #21262D;
+  --fg-muted:     #6E7681;
+  --fg-subtle:    #8B949E;
+  --fg-default:   #C9D1D9;
+  --fg-emphasis:  #E6EDF3;
+
+  --plasma:       #58A6FF;
+  --plasma-glow:  rgba(88, 166, 255, 0.15);
+  --emerald:      #3FB950;
+  --emerald-glow: rgba(63, 185, 80, 0.15);
+  --crimson:      #F85149;
+  --crimson-glow: rgba(248, 81, 73, 0.15);
+  --amber:        #E3B341;
+  --violet:       #BC8CFF;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--fg-default);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #30363D; }
+
+/* ─── Selection ──────────────────────────────────────────── */
+::selection { background: rgba(88, 166, 255, 0.25); color: var(--fg-emphasis); }
+
+/* ─── Panel Base ─────────────────────────────────────────── */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--bg-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--bg-border);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  user-select: none;
+}
+
+/* ─── Token Badge ────────────────────────────────────────── */
+.token-keyword  { color: #FF7B72; }
+.token-string   { color: #A5D6FF; }
+.token-number   { color: #79C0FF; }
+.token-operator { color: #FF7B72; }
+.token-ident    { color: #FFA657; }
+.token-comment  { color: var(--fg-muted); font-style: italic; }
+.token-punct    { color: var(--fg-subtle); }
+.token-default  { color: var(--fg-default); }
+
+/* ─── Glow effects ───────────────────────────────────────── */
+.glow-plasma  { box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.3), 0 0 20px rgba(88, 166, 255, 0.1); }
+.glow-emerald { box-shadow: 0 0 0 1px rgba(63, 185, 80, 0.3),  0 0 20px rgba(63, 185, 80, 0.1); }
+.glow-crimson { box-shadow: 0 0 0 1px rgba(248, 81, 73, 0.3),  0 0 20px rgba(248, 81, 73, 0.1); }
+
+/* ─── Noise texture overlay ──────────────────────────────── */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ─── Monaco Editor Override ─────────────────────────────── */
+.monaco-editor,
+.monaco-editor-background,
+.monaco-editor .margin {
+  background-color: var(--bg-panel) !important;
+}
+
+.monaco-editor .current-line,
+.monaco-editor .view-overlays .current-line-exact {
+  border: 1px solid var(--bg-border) !important;
+  background: rgba(255,255,255,0.025) !important;
+}
+
+/* ─── Tab indicator underline ────────────────────────────── */
+.tab-active {
+  position: relative;
+  color: var(--fg-emphasis);
+}
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--plasma);
+  border-radius: 1px 1px 0 0;
+}
+
+/* ─── Stagger fade-up for table rows ─────────────────────── */
+.stagger-row {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeUp 0.2s var(--ease-out) forwards;
+}
+.stagger-row:nth-child(1)  { animation-delay: 0ms; }
+.stagger-row:nth-child(2)  { animation-delay: 30ms; }
+.stagger-row:nth-child(3)  { animation-delay: 60ms; }
+.stagger-row:nth-child(4)  { animation-delay: 90ms; }
+.stagger-row:nth-child(5)  { animation-delay: 120ms; }
+.stagger-row:nth-child(6)  { animation-delay: 150ms; }
+.stagger-row:nth-child(7)  { animation-delay: 180ms; }
+.stagger-row:nth-child(8)  { animation-delay: 210ms; }
+.stagger-row:nth-child(9)  { animation-delay: 240ms; }
+.stagger-row:nth-child(10) { animation-delay: 270ms; }
+.stagger-row:nth-child(n+11) { animation-delay: 300ms; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
